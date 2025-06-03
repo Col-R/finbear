@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐻 Finbear
 
-## Getting Started
+**Finbear** is a modern, fullstack investment dashboard built with the best tools and a clear purpose:
 
-First, run the development server:
+> To make portfolio tracking insightful, secure, and genuinely fun — plus its a good way for the developer, Cole, to show off a bit.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Vision
+
+Finbear empowers users to:
+- Securely log in to their own account
+- Add holdings with ticker, cost basis, and share count
+- Pull real-time stock prices and historical data
+- View total portfolio value and gain/loss over time
+- Ask natural-language questions to an AI-powered portfolio coach (coming soon)
+
+Finbear isn't just another finance app — it's a demonstration of how **modern fullstack architecture** can meet **clear product goals** and stay delightful along the way.
+
+---
+
+## 🧠 Tech Stack
+
+| Layer        | Tech                                   |
+|--------------|----------------------------------------|
+| Frontend     | Next.js 15 (App Router) + React 19     |
+| Styling      | Tailwind CSS 4 + ShadCN UI             |
+| Backend      | Next.js API Routes                     |
+| Auth         | Supabase Auth (JWT-based)              |
+| ORM/DB       | Prisma + PostgreSQL                    |
+| Data API     | Polygon.io or Yahoo Finance (planned)  |
+| AI           | OpenAI API for GPT-based insights      |
+| Deployment   | Vercel (frontend + backend)            |
+
+---
+
+## 📁 Project Structure
+
+```
+/src
+  /app            → App Router pages & API routes
+  /components     → ShadCN + app components
+  /lib            → Utility functions (auth, Prisma, etc)
+  /styles         → Global Tailwind config
+/prisma
+  schema.prisma   → DB models (User, Holding)
+.env, .env.local  → Secrets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚧 Current Status
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Finbear is actively being developed. Upcoming milestones:
+- [x] Project scaffolded (Next.js 15 + Tailwind 4 + Prisma 6)
+- [x] ShadCN components set up
+- [ ] User model & authentication
+- [ ] Holdings CRUD routes
+- [ ] Live stock data integration
+- [ ] AI portfolio assistant
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 💼 Why It Exists
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is part of a strategic dev portfolio. It demonstrates:
+- Fullstack web skills on a modern stack
+- Secure and scalable architecture
+- A thoughtful balance of performance, design, and DX
+- The ability to build productively with AI, not be replaced by it
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🙌 Stay Tuned
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This repo will evolve fast. Want to follow along or contribute?  
+Drop a ⭐️, fork it, or just check back for major updates.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Finbear is here to make finance *bearable* — and fullstack dev *credible*.
+
