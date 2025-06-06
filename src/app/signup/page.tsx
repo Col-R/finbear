@@ -1,11 +1,9 @@
-import { signUp } from "@/app/auth/actions";
+import SignupForm from '@/components/auth/SignupForm'
 
 export default function SignupPage() {
   return (
-    <form action={signUp}>
-      <input name="email" type="email" placeholder="Email" required />
-      <input name="password" type="password" placeholder="Password" required />
-      <button type="submit">Sign Up</button>
-    </form>
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <SignupForm />
+    </div>
   )
 }
