@@ -54,7 +54,7 @@ Finbear isn't just another finance app — it's a demonstration of how **modern 
 Finbear is actively being developed. Upcoming milestones:
 - [x] Project scaffolded (Next.js 15 + Tailwind 4 + Prisma 6)
 - [x] ShadCN components set up
-- [ ] User model & authentication
+- [ ] User model & authentication - In Progress 6/6
 - [ ] Holdings CRUD routes
 - [ ] Live stock data integration
 - [ ] AI portfolio assistant
@@ -76,5 +76,5 @@ This project is part of a strategic dev portfolio. It demonstrates:
 This repo will evolve fast. Want to follow along or contribute?  
 Drop a ⭐️, fork it, or just check back for major updates.
 
-Finbear is here to make finance *bearable* — and fullstack dev *credible*.
+Finbear is here to make finance *bearable*
 

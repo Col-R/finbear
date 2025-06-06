@@ -1,0 +1,23 @@
+Next few PRs:
+    Make the authenticated users into a User row in the actual database. Every time a user signs up, automatically create a corresponding User entry in the database. 
+    - Modify signup logic to call prisma.user.create() after auth.signUp().
+    - Use Supabase's user id as the User.id in the Prisma schema (already aligned).
+    - Optional: add a sanity check to ensure duplicates aren’t created.
+    User Session Context - Get the logged-in user’s data from the DB. This will let pages know who is logged in and simplify queries like “get this user’s portfolios.”
+    - Create a getUserFromSession() helper using createServerClient(). 
+    - Fetch the user’s full DB record (email, id, etc) via their auth.user.id.
+    - Make it available to pages via props or context.
+    Dashboard Shell + Layout - Set up the base layout for authenticated pages.
+    - Create a /dashboard/layout.tsx and /dashboard/page.tsx.
+    - Add a left nav (even if placeholder), header, and protected content section.
+    - Use middleware.ts to protect the entire dashboard route.
+    - Optionally display the user’s email or a welcome message
+    Create Portfolio - Let users create a new portfolio from the dashboard. This will be the user’s first "asset" inside the platform — sets the stage for adding positions.
+    - /dashboard/portfolios/new page + form component.
+    - Form input: portfolio name.
+    - On submit, call a server action to insert into the Portfolio table, linked to user.id.
+    Portfolio List View - Show a list of the logged-in user’s portfolios.
+    - Query all portfolios where userId = session.user.id.
+    - Display them with basic info: name, number of positions (can be 0), total Value, createdAt.
+    - Link each portfolio to a /dashboard/portfolio/[id] detail page (future work).
+    - Add logic to prevent unauthorized access.
