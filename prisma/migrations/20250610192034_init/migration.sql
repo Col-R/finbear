@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "email" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -9,9 +9,9 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Portfolio" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Portfolio_pkey" PRIMARY KEY ("id")
@@ -19,11 +19,11 @@ CREATE TABLE "Portfolio" (
 
 -- CreateTable
 CREATE TABLE "Position" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "ticker" TEXT NOT NULL,
     "shares" DOUBLE PRECISION NOT NULL,
     "costBasis" DOUBLE PRECISION NOT NULL,
-    "portfolioId" TEXT NOT NULL,
+    "portfolioId" UUID NOT NULL,
 
     CONSTRAINT "Position_pkey" PRIMARY KEY ("id")
 );
