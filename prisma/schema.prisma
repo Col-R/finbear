@@ -17,27 +17,27 @@ datasource db {
         
 
 model User {
-  id         String      @id @default(uuid())
+  id         String      @id @default(uuid()) @db.Uuid
   email      String      @unique
   portfolios Portfolio[]
   createdAt  DateTime    @default(now())
 }
 
 model Portfolio {
-  id         String     @id @default(uuid())
+  id         String     @id @default(uuid()) @db.Uuid
   name       String
-  userId     String
+  userId     String     @db.Uuid
   user       User       @relation(fields: [userId], references: [id])
   positions  Position[]
   createdAt  DateTime   @default(now())
 }
 
 model Position {
-  id           String    @id @default(uuid())
+  id           String    @id @default(uuid()) @db.Uuid
   ticker       String
   shares       Float
   costBasis    Float
-  portfolioId  String
+  portfolioId  String    @db.Uuid
   portfolio    Portfolio @relation(fields: [portfolioId], references: [id])
 }
 

@@ -5,7 +5,7 @@ async function main() {
   // Create a test user
   const user = await prisma.user.create({
     data: {
-      email: 'testuser@example.com',
+      email: 'testuser1@example.com',
       portfolios: {
         create: [
           {
