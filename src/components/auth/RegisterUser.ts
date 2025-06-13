@@ -12,11 +12,10 @@ import { redirect } from "next/navigation";
 export default async function registerUser(formData: FormData) {
   const rawEmail = String(formData.get("email"))
   const email    = rawEmail.trim().toLowerCase();
-  const password = String(formData.get("password")).trim();
+  const password = String(formData.get("password"));
 
   // 1️⃣  Supabase signUp
   const supabase = await createServerSupabaseClient();          // cookie-aware SSR client
-  console.log(JSON.stringify({ rawEmail: email, length: email.length }));
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -24,7 +23,8 @@ export default async function registerUser(formData: FormData) {
   });
 
   if (error) {
-    throw new Error(error.message);
+      console.error("SUPABASE signUp error →", { code: error.code, message: error.message });
+  throw new Error(error.message);
   }
   const uid = data.user!.id;  
 
