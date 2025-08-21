@@ -2,7 +2,10 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { prisma } from '@/lib/prisma'
 
+import CreatePortfolioForm from "@/components/portfolio/CreatePortfolioForm";
+
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from "@/components/ui/button";
 import {Separator} from '@/components/ui/separator'
 
 import { unstable_noStore } from "next/cache";
@@ -32,7 +35,7 @@ export default async function DashboardPage() {
               Create a portfolio, then add positions to track performance.
             </p>
         </div>
-        <button> Create Portfolio Form</button> {/* to do */}
+        <CreatePortfolioForm />
       </div>
 
       <Separator className="mb-6"/>
