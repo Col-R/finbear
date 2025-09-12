@@ -38,6 +38,6 @@ model Position {
   shares       Float
   costBasis    Float
   portfolioId  String    @db.Uuid
-  portfolio    Portfolio @relation(fields: [portfolioId], references: [id])
+  portfolio    Portfolio  @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
 }
 

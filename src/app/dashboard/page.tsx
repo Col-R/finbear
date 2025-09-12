@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 
 import CreatePortfolioForm from "@/components/portfolio/CreatePortfolioForm";
 import RenamePortfolioDialog from "@/components/portfolio/RenamePortfolioDialog";
+import DeletePortfolioDialog from "@/components/portfolio/DeletePortfolioDialog";
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import {Separator} from '@/components/ui/separator'
@@ -55,7 +56,10 @@ export default async function DashboardPage() {
             <Card key={p.id} className="hover:shadow-sm transition-shadow">
               <CardHeader className="flex flex-row items-start justify-between space-y-0">
                 <CardTitle className="text-base">{p.name}</CardTitle>
-                <RenamePortfolioDialog id={p.id} currentName={p.name} />
+                <div className="flex-col">
+                  <RenamePortfolioDialog id={p.id} currentName={p.name} />
+                  <DeletePortfolioDialog id = {p.id} name={p.name} />
+                </div>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
                 Created {new Date(p.createdAt).toLocaleDateString()}

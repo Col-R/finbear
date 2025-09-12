@@ -67,3 +67,32 @@ export async function renamePortfolio(formData: FormData): Promise<void> {
   }
   revalidatePath('/dashboard')
 }
+
+const DeletePortfolio= z.object({
+  id: z.string().uuid(),
+})
+
+export async function deletePortfolio(formData: FormData): Promise<void> {
+  const { id } = DeletePortfolio.parse({
+    id: String(formData.get("id") ?? "")
+  });
+
+  const supabase = await createServerSupabaseClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error ("Not authenticated");
+
+  // cascade delete for all positions within the portfolio
+  const { count } = await prisma.portfolio.deleteMany({
+    where: { id, userId:user.id}
+  })
+
+  if (count === 0) {
+    // not found or not owned when deleteMany runs
+    throw new Error("Portfolio not found")
+  }
+
+  revalidatePath('/dashboard')
+}
