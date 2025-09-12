@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from '@/lib/prisma'
 
 import CreatePortfolioForm from "@/components/portfolio/CreatePortfolioForm";
+import RenamePortfolioDialog from "@/components/portfolio/RenamePortfolioDialog";
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import {Separator} from '@/components/ui/separator'
@@ -52,8 +53,9 @@ export default async function DashboardPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {portfolios.map((p) => (
             <Card key={p.id} className="hover:shadow-sm transition-shadow">
-              <CardHeader>
+              <CardHeader className="flex flex-row items-start justify-between space-y-0">
                 <CardTitle className="text-base">{p.name}</CardTitle>
+                <RenamePortfolioDialog id={p.id} currentName={p.name} />
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
                 Created {new Date(p.createdAt).toLocaleDateString()}

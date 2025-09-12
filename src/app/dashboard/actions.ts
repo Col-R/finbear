@@ -34,3 +34,36 @@ export async function createPortfolio(formData: FormData): Promise<void> {
   revalidatePath('/dashboard');
 }
 
+const RenamePortfolio = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(2, "Name too short").max(64, "Name too long").trim(),
+});
+
+export async function renamePortfolio(formData: FormData): Promise<void> {
+  
+  const parsed = RenamePortfolio.parse({
+    id:String(formData.get("id") ?? ""),
+    name: String(formData.get("name") ?? "")
+  })
+
+  const supabase = await createServerSupabaseClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Not authenticated");
+
+  try {
+    await prisma.portfolio.update({
+      where: {
+        id: parsed.id,
+        userId: user.id,
+      },
+      data: { name: parsed.name}
+    });
+  } catch (e: unknown) {
+    throw e;
+  }
+  revalidatePath('/dashboard')
+}
