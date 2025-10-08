@@ -20,7 +20,7 @@ export default async function DashboardLayout ({
                 <Link href="/dashboard" className="hover:text-foreground">
                     Overview
                 </Link>
-                <Link href="/dashboard" className="hover:text-foreground">
+                <Link href="/dashboard/portfolios" className="hover:text-foreground">
                     Portfolios
                 </Link>
                 {/* Add more links as pages appear */}
