@@ -1,8 +1,4 @@
 Next few PRs:
-Login via Server Action
-    - loginUser(formData): signInWithPassword → redirect('/dashboard').
-    - Replace any client SDK login with <form action={loginUser}> pattern (or a small client wrapper to show pending).
-    - Add a logout server action for the header menu.
 User Session Context - Get the logged-in user’s data from the DB. This will let pages know who is logged in and simplify queries like “get this user’s portfolios.”
     - Create a getUserFromSession() helper using createServerClient(). 
     - Fetch the user’s full DB record (email, id, etc) via their auth.user.id.
