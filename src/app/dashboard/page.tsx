@@ -1,5 +1,4 @@
 import { requireUserId } from "@/lib/auth/session";
-import { redirect } from "next/navigation";
 import { prisma } from '@/lib/prisma'
 
 import CreatePortfolioForm from "@/components/portfolio/CreatePortfolioForm";
