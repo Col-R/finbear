@@ -1,8 +1,4 @@
 Next few PRs:
-User Session Context - Get the logged-in user’s data from the DB. This will let pages know who is logged in and simplify queries like “get this user’s portfolios.”
-    - Create a getUserFromSession() helper using createServerClient(). 
-    - Fetch the user’s full DB record (email, id, etc) via their auth.user.id.
-    - Make it available to pages via props or context.
 Dashboard Shell + Layout - Set up the base layout for authenticated pages.
     - Create a /dashboard/layout.tsx and /dashboard/page.tsx.
     - Add a left nav (even if placeholder), header, and protected content section.
