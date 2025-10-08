@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { requireUserId } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
 import { prisma } from '@/lib/prisma'
 
@@ -13,15 +13,10 @@ import { unstable_noStore } from "next/cache";
 
 export default async function DashboardPage() {
   unstable_noStore() // prevents stale lists
-
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) redirect("/login")
+  const userId = await requireUserId()
 
   const portfolios = await prisma.portfolio.findMany({
-    where: {userId: user.id},
+    where: {userId: userId},
     orderBy: {createdAt: "desc"},
   });
 

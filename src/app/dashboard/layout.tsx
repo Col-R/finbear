@@ -1,15 +1,12 @@
 import Link from "next/link"
-import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/app/auth/actions";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/auth/session";
 
 export default async function DashboardLayout ({
     children,
 }: {children: React.ReactNode}) {
-    const supabase = await createServerSupabaseClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) redirect ('/login');
+    const { auth, db } = await requireUser();
 
     return(
         <div className="min-h-screen bg-background">
@@ -31,9 +28,12 @@ export default async function DashboardLayout ({
             </div>
 
             {/* Server-action submit: posts straight to signOut and redirects to /login */}
-            <form action={signOut}>
-                <Button variant="ghost" size="sm">Sign out</Button>
-            </form>
+            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <span>{db?.email ?? auth.email ?? ""}</span>
+                <form action={signOut}>
+                    <Button variant="ghost" size="sm">Sign out</Button>
+                </form>
+                </div>
             </div>
         </header>
 
