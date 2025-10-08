@@ -1,23 +1,31 @@
 Next few PRs:
-    Make the authenticated users into a User row in the actual database. Every time a user signs up, automatically create a corresponding User entry in the database. 
-    - Modify signup logic to call prisma.user.create() after auth.signUp().
-    - Use Supabase's user id as the User.id in the Prisma schema (already aligned).
-    - Optional: add a sanity check to ensure duplicates aren’t created.
-    User Session Context - Get the logged-in user’s data from the DB. This will let pages know who is logged in and simplify queries like “get this user’s portfolios.”
+Login via Server Action
+    - loginUser(formData): signInWithPassword → redirect('/dashboard').
+    - Replace any client SDK login with <form action={loginUser}> pattern (or a small client wrapper to show pending).
+    - Add a logout server action for the header menu.
+User Session Context - Get the logged-in user’s data from the DB. This will let pages know who is logged in and simplify queries like “get this user’s portfolios.”
     - Create a getUserFromSession() helper using createServerClient(). 
     - Fetch the user’s full DB record (email, id, etc) via their auth.user.id.
     - Make it available to pages via props or context.
-    Dashboard Shell + Layout - Set up the base layout for authenticated pages.
+Dashboard Shell + Layout - Set up the base layout for authenticated pages.
     - Create a /dashboard/layout.tsx and /dashboard/page.tsx.
     - Add a left nav (even if placeholder), header, and protected content section.
     - Use middleware.ts to protect the entire dashboard route.
     - Optionally display the user’s email or a welcome message
-    Create Portfolio - Let users create a new portfolio from the dashboard. This will be the user’s first "asset" inside the platform — sets the stage for adding positions.
-    - /dashboard/portfolios/new page + form component.
-    - Form input: portfolio name.
-    - On submit, call a server action to insert into the Portfolio table, linked to user.id.
-    Portfolio List View - Show a list of the logged-in user’s portfolios.
-    - Query all portfolios where userId = session.user.id.
-    - Display them with basic info: name, number of positions (can be 0), total Value, createdAt.
-    - Link each portfolio to a /dashboard/portfolio/[id] detail page (future work).
-    - Add logic to prevent unauthorized access.
+
+Portfolio Details & Positions CRUD
+    - New route: /dashboard/portfolio/[id] (Server Component).
+    - Show portfolio meta + table of positions.
+    - Actions: addPosition, updatePosition, deletePosition (Zod validate: ticker, shares, costBasis).
+    - Acceptance: can add/edit/delete positions; RLS prevents cross-user access (verify with SQL editor or a second account).
+
+Market Data Adapter (MVP)
+    - Choose provider (simple to start): Polygon/yahoo finance.
+    - Implement lib/quotes/provider.ts with getQuote(ticker) -> { price, currency, asOf }, add a 30–60s in-memory TTL cache to avoid rate limits.
+    - Compute portfolio totals in lib/portfolio/math.ts (current value, P/L absolute and %).
+    - Acceptance: dashboard shows current total value and P/L with live prices.
+
+Polish & Tests
+    - Toasts for action success/failure (shadcn use-toast).
+    - Unit tests for math utils; light integration test of actions.
+    - Error/empty/loading states across dashboard & detail pages.
