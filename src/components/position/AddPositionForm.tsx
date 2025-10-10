@@ -59,6 +59,7 @@ export default function AddPositionForm({portfolioId}: { portfolioId: string}) {
                 name="costBasis"
                 type="number"
                 inputMode="decimal"
+                className='no-spinners'
                 placeholder="Cost basis ($)"
                 value={costBasis}
                 onChange={(e) => setCostBasis(e.target.value)}
