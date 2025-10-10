@@ -10,15 +10,23 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { ChevronRight } from 'lucide-react'
 
-// 🧪 Placeholder data (remove once wired to DB)
-const portfoliosMock = [
-  { id: "demo-1", name: "Retirement", positions: 7, createdAt: "Jan 12, 2025" },
-  { id: "demo-2", name: "Tech Growth", positions: 12, createdAt: "Feb 3, 2025" },
-  { id: "demo-3", name: "Dividend Fund", positions: 5, createdAt: "Mar 22, 2025" },
-];
+import { prisma } from "@/lib/prisma";
+import { requireUserId } from "@/lib/auth/session";
+
+import { unstable_noStore as noStore } from "next/cache";
+
 
 export default async function PortfoliosPage() {
+    noStore(); // always fetch fresh data for this page
+
+  const userId = await requireUserId(); // redirects to /login if not authed
+  const portfolios = await prisma.portfolio.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, name: true, createdAt: true },
+  });
   return (
     <div className="mx-auto max-w-6xl px-6 py-8">
       {/* Header */}
@@ -40,7 +48,7 @@ export default async function PortfoliosPage() {
       <Separator className="my-6" />
 
       {/* Grid of portfolio cards (mocked) */}
-      {portfoliosMock.length === 0 ? (
+      {portfolios.length === 0 ? (
         <Card>
           <CardHeader>
             <CardTitle>No portfolios yet</CardTitle>
@@ -56,41 +64,48 @@ export default async function PortfoliosPage() {
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {portfoliosMock.map((p) => (
-            <Card key={p.id} className="hover:shadow-sm transition-shadow">
+          {portfolios.map((p) => (
+            <Card
+              key={p.id}
+              className="transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 border-border/70 hover:border-foreground/15"
+            >
               <CardHeader className="space-y-1">
                 <CardTitle className="text-base">{p.name}</CardTitle>
                 <CardDescription>
-                  {p.positions} {p.positions === 1 ? "position" : "positions"}
+                  Created {new Date(p.createdAt).toLocaleDateString()}
                 </CardDescription>
               </CardHeader>
+
               <CardContent className="text-sm text-muted-foreground">
-                Created {p.createdAt}
+                View details to manage positions.
               </CardContent>
-              <CardFooter className="flex items-center justify-between">
-                <Link href={`/dashboard/portfolio/${p.id}`}>
-                  <Button variant="secondary" size="sm">Open</Button>
+
+              <CardFooter className="flex justify-between">
+                <Link
+                  href={`/dashboard/portfolios/${p.id}`}
+                  className="group inline-flex items-center rounded-md border border-transparent px-3 py-2 text-sm font-medium
+                            transition-all duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-2
+                            focus-visible:ring-ring focus-visible:ring-offset-2"
+                  aria-label={`Open portfolio ${p.name}`}
+                >
+                  Open
+                  <ChevronRight
+                    className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5"
+                    aria-hidden="true"
+                  />
                 </Link>
-                <div className="flex gap-2">
+
+                {/* Optional future actions */}
+                {/* <div className="flex gap-1">
                   <Button variant="ghost" size="sm">Rename</Button>
                   <Button variant="destructive" size="sm">Delete</Button>
-                </div>
+                </div> */}
               </CardFooter>
             </Card>
           ))}
         </div>
       )}
 
-      {/* Roadmap / TODOs section */}
-      <div className="mt-10">
-        <h2 className="mb-2 text-sm font-medium text-muted-foreground">Coming soon</h2>
-        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-          <li>Fetch portfolios for the logged-in user (SSR with Prisma).</li>
-          <li>Add inline “Create Portfolio” (dialog or inline form).</li>
-          <li>Rename and Delete actions (hook server actions).</li>
-          <li>Navigate to portfolio detail page for positions & performance.</li>
-        </ul>
-      </div>
     </div>
   );
 }
