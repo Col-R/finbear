@@ -10,6 +10,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { ChevronRight } from 'lucide-react'
 
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/auth/session";
@@ -64,38 +65,47 @@ export default async function PortfoliosPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {portfolios.map((p) => (
-            <Card key={p.id} className="hover:shadow-sm transition-shadow">
+            <Card
+              key={p.id}
+              className="transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 border-border/70 hover:border-foreground/15"
+            >
               <CardHeader className="space-y-1">
                 <CardTitle className="text-base">{p.name}</CardTitle>
                 <CardDescription>
                   Created {new Date(p.createdAt).toLocaleDateString()}
                 </CardDescription>
               </CardHeader>
+
               <CardContent className="text-sm text-muted-foreground">
-                {/* Placeholder for summary stats (e.g., positions count, value) */}
                 View details to manage positions.
               </CardContent>
+
               <CardFooter className="flex justify-between">
-                <Link href={`/dashboard/portfolios/${p.id}`}>
-                  <Button variant="secondary" size="sm">Open</Button>
+                <Link
+                  href={`/dashboard/portfolios/${p.id}`}
+                  className="group inline-flex items-center rounded-md border border-transparent px-3 py-2 text-sm font-medium
+                            transition-all duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-2
+                            focus-visible:ring-ring focus-visible:ring-offset-2"
+                  aria-label={`Open portfolio ${p.name}`}
+                >
+                  Open
+                  <ChevronRight
+                    className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5"
+                    aria-hidden="true"
+                  />
                 </Link>
-                {/* optional action slots: Rename/Delete buttons */}
+
+                {/* Optional future actions */}
+                {/* <div className="flex gap-1">
+                  <Button variant="ghost" size="sm">Rename</Button>
+                  <Button variant="destructive" size="sm">Delete</Button>
+                </div> */}
               </CardFooter>
             </Card>
           ))}
         </div>
       )}
 
-      {/* Roadmap / TODOs section */}
-      <div className="mt-10">
-        <h2 className="mb-2 text-sm font-medium text-muted-foreground">Coming soon</h2>
-        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-          <li>Fetch portfolios for the logged-in user (SSR with Prisma).</li>
-          <li>Add inline “Create Portfolio” (dialog or inline form).</li>
-          <li>Rename and Delete actions (hook server actions).</li>
-          <li>Navigate to portfolio detail page for positions & performance.</li>
-        </ul>
-      </div>
     </div>
   );
 }

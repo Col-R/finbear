@@ -72,7 +72,7 @@ export default async function PortfolioDetailPage({params}: Props) {
                   <TableRow key={pos.id}>
                     <TableCell className="font-medium">{pos.ticker}</TableCell>
                     <TableCell>{pos.shares}</TableCell>
-                    <TableCell>{pos.costBasis.toFixed(2)}</TableCell>
+                    <TableCell>${pos.costBasis.toFixed(2)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
