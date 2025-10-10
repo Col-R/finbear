@@ -8,7 +8,7 @@ import { requireUserId } from '@/lib/auth/session'
 const AddPosition = z.object ({
     ticker: z.string().trim().toUpperCase().min(1).max(10),
     shares: z.coerce.number().positive(),
-    costBasis: z.number()
+    costBasis: z.coerce.number()
         .min(0, { message: "Dollar amount cannot be negative" })
         .max(1000000, { message: "Dollar amount cannot exceed one million" })
         .refine((val) => Number(val.toFixed(2)) === val, {

@@ -2,7 +2,7 @@ import {notFound} from 'next/navigation'
 import Link from 'next/link'
 import { prisma } from  '@/lib/prisma'
 import { requireUserId } from '@/lib/auth/session'
-
+import AddPositionForm from '@/components/position/AddPositionForm'
 
 import {
   Card, CardHeader, CardTitle, CardDescription, CardContent
@@ -43,9 +43,9 @@ export default async function PortfolioDetailPage({params}: Props) {
           <CardTitle className="text-base">Add position</CardTitle>
           <CardDescription>Enter a ticker, shares, and cost basis.</CardDescription>
         </CardHeader>
-        {/* <CardContent>
+        <CardContent>
           <AddPositionForm portfolioId={portfolio.id} />
-        </CardContent> */}
+        </CardContent>
       </Card>
 
       <Card>
