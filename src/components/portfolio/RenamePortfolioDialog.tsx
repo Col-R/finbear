@@ -33,12 +33,13 @@ export default function RenamePortfolioDialog({
         try {
             await renamePortfolio(fd);
             setOpen(false);
-        } catch (e: unknown) { 
+        } catch (e) {
             if (e instanceof Error) {
-                setError(e.message)
+                console.error('Caught error:', e.message);
+                console.error('Stack trace', e.stack)
             } else {
-                setError("Failed to rename portfolio")
-            } 
+                console.error('Unknown error caught: ', e)
+            }
         } finally {
                 setPending(false)
         }

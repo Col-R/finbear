@@ -16,8 +16,13 @@ export default function CreatePortfolioForm() {
         try{
             await createPortfolio(fd);
             setName("");
-        } catch(e) {
-            console.error(e)
+        } catch (e) {
+            if (e instanceof Error) {
+                console.error('Caught error:', e.message);
+                console.error('Stack trace', e.stack)
+            } else {
+                console.error('Unknown error caught: ', e)
+            }
         } finally {
             setPending(false)
         }
