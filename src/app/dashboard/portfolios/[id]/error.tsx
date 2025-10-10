@@ -19,7 +19,7 @@ export default function Error({
     <div className="mx-auto max-w-lg py-20 text-center">
       <h1 className="mb-2 text-2xl font-semibold">Something went wrong</h1>
       <p className="mb-6 text-sm text-muted-foreground">
-        Our bears couldn't load this portfolio. You can try again or go back.
+        Our bears couldn&rsquo;t load this portfolio. You can try again or go back.
       </p>
       <div className="flex justify-center gap-2">
         <Button onClick={reset} variant="secondary">Try again</Button>
