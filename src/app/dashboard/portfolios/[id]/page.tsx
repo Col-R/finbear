@@ -1,5 +1,6 @@
 import {notFound} from 'next/navigation'
 import Link from 'next/link'
+
 import { prisma } from  '@/lib/prisma'
 import { requireUserId } from '@/lib/auth/session'
 import AddPositionForm from '@/components/position/AddPositionForm'
@@ -10,15 +11,18 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 
-type Props = { params: { id: string } };
-
-export default async function PortfolioDetailPage({params}: Props) {
+export default async function PortfolioDetailPage(
+  { params }: { params: Promise<{ id: string }> } // absurd next.js 15 nonsense here. all params need to be an async/promise.
+) {
+    const { id } = await params;
     const userId = await requireUserId();
     const portfolio = await prisma.portfolio.findFirst({
-        where: { id: params.id, userId},
-        select: {
-            id: true, name: true, createdAt: true,
-             positions: { select: { id: true, ticker: true, shares: true, costBasis: true }, orderBy: { ticker: "asc" } },
+        where: { id: id, userId},
+        select: { 
+          id: true, name: true, createdAt: true,
+             positions: { 
+                select: { id: true, ticker: true, shares: true, costBasis: true }, 
+                orderBy: { ticker: "asc" } },
         }
     });
     if (!portfolio) notFound();
