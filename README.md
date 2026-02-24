@@ -65,35 +65,125 @@ Finbear is actively being developed. Upcoming milestones:
 
 ---
 
-## 🛠️ Setup
+## 🛠️ Local Development Guide
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-3. Copy `.env.example` to `.env.local` and fill in your credentials:
-   ```bash
-   cp .env.example .env.local
-   ```
-4. Run database migrations:
-   ```bash
-   pnpm dlx prisma migrate deploy
-   ```
-5. Start the development server:
-   ```bash
-   pnpm dev
-   ```
+### Prerequisites
 
-### Environment Variables
+| Tool | Version | Notes |
+|------|---------|-------|
+| **Node.js** | 20+ | Tested on v25. Node 22+ requires the `instrumentation.ts` fix (included). |
+| **pnpm** | 9+ | Package manager — `npm install -g pnpm` if needed |
+| **Git** | 2.x | Standard Git |
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous key |
-| `DATABASE_URL` | PostgreSQL connection string |
-| `DIRECT_URL` | Direct PostgreSQL connection (for migrations) |
-| `POLYGON_API_KEY` | Polygon.io API key for stock prices |
+You will also need accounts (free tiers work) for:
+- [Supabase](https://supabase.com) — Auth + PostgreSQL database
+- [Polygon.io](https://polygon.io) — Stock market data API
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/your-username/finbear.git
+cd finbear
+pnpm install
+```
+
+`pnpm install` automatically runs `prisma generate` via the `postinstall` script.
+
+### 2. Set Up Supabase
+
+1. Create a new project at [app.supabase.com](https://app.supabase.com)
+2. Go to **Project Settings > API** and note:
+   - **Project URL** (`https://<ref>.supabase.co`)
+   - **Anon public key** (`eyJ...`)
+3. Go to **Project Settings > Database** and note:
+   - **Connection string (Transaction mode)** — this is your `DATABASE_URL`
+   - **Connection string (Session mode)** — this is your `DIRECT_URL`
+
+### 3. Configure Environment Variables
+
+```bash
+cp .env.example .env.local
+```
+
+Then fill in `.env.local`:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://<your-project-ref>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
+DATABASE_URL=postgresql://postgres.<ref>:<password>@<pooler-host>:6543/postgres?pgbouncer=true&connection_limit=1
+DIRECT_URL=postgresql://postgres.<ref>:<password>@<pooler-host>:5432/postgres
+POLYGON_API_KEY=<your-polygon-api-key>
+```
+
+Also create a `.env` file with just the database URLs (Prisma reads this):
+
+```bash
+DATABASE_URL="<same as above>"
+DIRECT_URL="<same as above>"
+```
+
+> **Important**: Copy the exact pooler hostname from your Supabase dashboard. It varies per project (e.g., `aws-0-us-east-1.pooler.supabase.com` vs `aws-1-us-east-1.pooler.supabase.com`). Using the wrong prefix will cause a `FATAL: Tenant or user not found` error.
+
+### 4. Run Database Migrations
+
+```bash
+pnpm dlx prisma migrate deploy
+```
+
+This creates the `User`, `Portfolio`, and `Position` tables in your Supabase PostgreSQL database.
+
+> **Note**: If your Supabase database only resolves over IPv6 and your machine doesn't support it, you can apply migrations via the [Supabase Management API](https://supabase.com/docs/reference/api/introduction) or use the pooler session-mode URL (`DIRECT_URL` on port 5432) as a workaround.
+
+### 5. Start the Dev Server
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser. The app runs on port 3000 by default (or the next available port).
+
+### 6. Verify It Works
+
+1. Navigate to `/signup` and create an account
+2. You should be redirected to `/dashboard`
+3. Create a portfolio, add positions with stock tickers
+4. Live prices will load from Polygon.io
+
+### Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start dev server with Turbopack |
+| `pnpm build` | Production build |
+| `pnpm start` | Start production server |
+| `pnpm test` | Run unit tests (Vitest) |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm test:e2e` | Run E2E tests (Playwright) |
+| `pnpm lint` | Run ESLint |
+
+### Environment Variables Reference
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL (`https://<ref>.supabase.co`) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Supabase anonymous/public key |
+| `DATABASE_URL` | Yes | PostgreSQL connection via Supabase pooler (port 6543, transaction mode) |
+| `DIRECT_URL` | Yes | PostgreSQL direct/session connection (port 5432, for migrations) |
+| `POLYGON_API_KEY` | Yes | Polygon.io API key for live stock prices |
+
+### Troubleshooting
+
+**`FATAL: Tenant or user not found`**
+Your `DATABASE_URL` pooler hostname doesn't match your Supabase project. Copy the exact connection string from your Supabase dashboard under **Project Settings > Database > Connection string**.
+
+**`TypeError: localStorage.getItem is not a function`**
+This happens on Node.js 22+ where a broken `localStorage` global is exposed. The fix is already included in `src/instrumentation.ts` — make sure you haven't deleted that file.
+
+**`pnpm dlx prisma migrate deploy` fails with connection timeout**
+Your Supabase direct database host may be IPv6-only. Use the pooler session-mode URL (port 5432) as your `DIRECT_URL`, or apply migrations through the Supabase dashboard SQL editor.
+
+**Port already in use**
+If port 3000 is taken, Next.js will auto-increment. Check your terminal output for the actual port.
 
 ---
 
