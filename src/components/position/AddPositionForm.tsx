@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { addPosition } from '@/app/dashboard/portfolios/[id]/actions'
+import { toast } from 'sonner'
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -26,12 +27,12 @@ export default function AddPositionForm({portfolioId}: { portfolioId: string}) {
         setTicker("");
         setShares("");
         setCostBasis("");
+        toast.success('Position added')
         } catch (e) {
             if (e instanceof Error) {
-                console.error('Caught error:', e.message);
-                console.error('Stack trace', e.stack)
+                toast.error(e.message)
             } else {
-                console.error('Unknown error caught: ', e)
+                toast.error('Failed to add position')
             }
         } finally {
         setPending(false);

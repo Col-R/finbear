@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { renamePortfolio } from '@/app/dashboard/actions'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Pencil } from 'lucide-react'
@@ -32,13 +33,13 @@ export default function RenamePortfolioDialog({
 
         try {
             await renamePortfolio(fd);
+            toast.success('Portfolio renamed');
             setOpen(false);
         } catch (e) {
             if (e instanceof Error) {
-                console.error('Caught error:', e.message);
-                console.error('Stack trace', e.stack)
+                toast.error(e.message)
             } else {
-                console.error('Unknown error caught: ', e)
+                toast.error('Failed to rename portfolio')
             }
         } finally {
                 setPending(false)

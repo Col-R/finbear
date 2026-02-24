@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { deletePortfolio } from "@/app/dashboard/actions"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {   
     Dialog,
@@ -29,13 +30,13 @@ export default function DeletePortfolioDialog({
 
         try{
             await deletePortfolio(fd);
+            toast.success('Portfolio deleted');
             setOpen(false);
         } catch (e) {
             if (e instanceof Error) {
-                console.error('Caught error:', e.message);
-                console.error('Stack trace', e.stack)
+                toast.error(e.message)
             } else {
-                console.error('Unknown error caught: ', e)
+                toast.error('Failed to delete portfolio')
             }
         } finally {
             setPending(false)

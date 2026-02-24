@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { createPortfolio } from "@/app/dashboard/actions"
+import { toast } from "sonner"
 import { Input } from "../ui/input"
 import { Button } from '../ui/button'
 import { Plus } from "lucide-react"
@@ -16,12 +17,12 @@ export default function CreatePortfolioForm() {
         try{
             await createPortfolio(fd);
             setName("");
+            toast.success('Portfolio created')
         } catch (e) {
             if (e instanceof Error) {
-                console.error('Caught error:', e.message);
-                console.error('Stack trace', e.stack)
+                toast.error(e.message)
             } else {
-                console.error('Unknown error caught: ', e)
+                toast.error('Failed to create portfolio')
             }
         } finally {
             setPending(false)

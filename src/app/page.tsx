@@ -1,102 +1,128 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
+
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex min-h-screen flex-col bg-background font-sans text-foreground">
+      <section className="container mx-auto flex flex-col items-center justify-center px-4 py-24 text-center md:py-32 lg:py-40">
+        <div className="mb-8 inline-flex items-center rounded-full border bg-muted px-3 py-1 text-sm font-medium text-muted-foreground shadow-sm">
+          <span>🐻 Making finance bearable since 2025</span>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+        
+        <h1 className="mb-6 text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+          Track Your Investments <br className="hidden sm:inline" />
+          with <span className="text-primary">Confidence</span>
+        </h1>
+        
+        <p className="mb-10 max-w-2xl text-lg text-muted-foreground sm:text-xl md:text-2xl">
+          Finbear gives you the clarity you need to manage your portfolio without the noise. 
+          Simple, secure, and built for the modern investor.
+        </p>
+        
+        <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:gap-6">
+          <Button asChild size="lg" className="h-12 px-8 text-base font-semibold shadow-lg transition-all hover:scale-105 active:scale-95">
+            <Link href="/signup">Get Started Free</Link>
+          </Button>
+          <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base font-medium shadow-sm transition-all hover:bg-muted active:scale-95">
+            <Link href="/login">Log In</Link>
+          </Button>
+        </div>
+      </section>
+
+      <section className="container mx-auto px-4 py-16 md:py-24">
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+            Everything you need to grow
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Powerful tools wrapped in a friendly interface.
+          </p>
+        </div>
+
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="border-muted bg-card/50 transition-colors hover:bg-card">
+            <CardHeader>
+              <span className="text-4xl mb-2">📊</span>
+              <CardTitle>Portfolio Tracking</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Manage multiple portfolios and track all your positions in one unified dashboard.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-muted bg-card/50 transition-colors hover:bg-card">
+            <CardHeader>
+              <span className="text-4xl mb-2">⚡</span>
+              <CardTitle>Live Market Data</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Real-time price updates powered by Polygon.io ensure you never miss a beat.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-muted bg-card/50 transition-colors hover:bg-card">
+            <CardHeader>
+              <span className="text-4xl mb-2">📈</span>
+              <CardTitle>Smart Analytics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Instant gain/loss calculations and performance metrics at a glance.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-muted bg-card/50 transition-colors hover:bg-card">
+            <CardHeader>
+              <span className="text-4xl mb-2">🛡️</span>
+              <CardTitle>Bank-Grade Security</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Your financial data is protected with enterprise-level encryption and Supabase Auth.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section className="border-t bg-muted/30">
+        <div className="container mx-auto flex flex-col items-center justify-center gap-6 px-4 py-24 text-center">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+            Ready to tame the market?
+          </h2>
+          <p className="max-w-[600px] text-lg text-muted-foreground">
+            Join thousands of investors who trust Finbear to keep their portfolios on track.
+            No credit card required to start.
+          </p>
+          <Button asChild size="lg" className="mt-4 h-12 px-8 text-base font-semibold shadow-lg transition-all hover:scale-105">
+            <Link href="/signup">Create Free Account</Link>
+          </Button>
+        </div>
+      </section>
+
+      <footer className="border-t bg-background py-12">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 text-center md:flex-row md:text-left">
+          <p className="text-sm text-muted-foreground">
+            © 2025 Finbear. Making finance bearable. 🐻
+          </p>
+          <div className="flex gap-6 text-sm font-medium text-muted-foreground">
+            <Link href="#" className="hover:text-foreground hover:underline underline-offset-4">Privacy</Link>
+            <Link href="#" className="hover:text-foreground hover:underline underline-offset-4">Terms</Link>
+            <Link href="#" className="hover:text-foreground hover:underline underline-offset-4">Contact</Link>
+          </div>
+        </div>
       </footer>
     </div>
   );
