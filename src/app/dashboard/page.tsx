@@ -1,6 +1,8 @@
 import { requireUserId } from "@/lib/auth/session";
 import { prisma } from '@/lib/prisma'
-
+import Link from 'next/link'
+import { getQuotes } from '@/lib/quotes/polygon'
+import { calculatePortfolioSummary } from '@/lib/portfolio/math'
 import CreatePortfolioForm from "@/components/portfolio/CreatePortfolioForm";
 import RenamePortfolioDialog from "@/components/portfolio/RenamePortfolioDialog";
 import DeletePortfolioDialog from "@/components/portfolio/DeletePortfolioDialog";
@@ -17,7 +19,11 @@ export default async function DashboardPage() {
   const portfolios = await prisma.portfolio.findMany({
     where: {userId: userId},
     orderBy: {createdAt: "desc"},
+    include: { positions: { select: { ticker: true, shares: true, costBasis: true } } },
   });
+
+  const allTickers = [...new Set(portfolios.flatMap(p => p.positions.map(pos => pos.ticker)))]
+  const quotes = await getQuotes(allTickers)
 
 
 
@@ -49,14 +55,28 @@ export default async function DashboardPage() {
           {portfolios.map((p) => (
             <Card key={p.id} className="hover:shadow-sm transition-shadow">
               <CardHeader className="flex flex-row items-start justify-between space-y-0">
-                <CardTitle className="text-base">{p.name}</CardTitle>
+                <Link href={`/dashboard/portfolios/${p.id}`}>
+                  <CardTitle className="text-base hover:underline">{p.name}</CardTitle>
+                </Link>
                 <div className="flex-col">
                   <RenamePortfolioDialog id={p.id} currentName={p.name} />
                   <DeletePortfolioDialog id = {p.id} name={p.name} />
                 </div>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
-                Created {new Date(p.createdAt).toLocaleDateString()}
+                <p>Created {new Date(p.createdAt).toLocaleDateString()}</p>
+                
+                {(() => {
+                  const summary = calculatePortfolioSummary(p.positions, quotes)
+                  return summary.positionCount > 0 ? (
+                    <p className="text-sm font-medium mt-1 text-foreground">
+                      Total: ${summary.totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <span className={`ml-2 ${summary.totalGainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        ({summary.totalGainLossPercent >= 0 ? '+' : ''}{summary.totalGainLossPercent.toFixed(2)}%)
+                      </span>
+                    </p>
+                  ) : null
+                })()}
               </CardContent>
             </Card>
           ))}
