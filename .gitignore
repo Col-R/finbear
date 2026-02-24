@@ -41,3 +41,10 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+
+# sisyphus working files (may contain secrets/credentials)
+.sisyphus/
+
+# supabase CLI temp files
+supabase/.temp/
